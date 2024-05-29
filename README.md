@@ -9,5 +9,5 @@ S-Lab, Nanyang Technological University
 
 
 <div align="center">
-  <img src="https://github.com/KangLiao929/Noise-DA/blob/main/assets/teaser.png" height="340">
+  <img src="https://github.com/KangLiao929/Noise-DA/blob/main/assets/tesear.png" height="340">
 </div>
