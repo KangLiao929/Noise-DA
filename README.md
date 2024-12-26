@@ -37,8 +37,8 @@ git clone https://github.com/KangLiao929/Noise-DA
 cd Noise-DA
 
 # create new anaconda env
-conda create -n NoiseDA python=3.9
-conda activate NoiseDA
+conda create -n Noise-DA python=3.9
+conda activate Noise-DA
 
 # install python dependencies
 pip install torch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 --index-url https://download.pytorch.org/whl/cu121
@@ -55,7 +55,7 @@ pip install -r requirements.txt
 sh test.sh ./configs_demo/denoising.json
 
 # test the image deraining model
-sh test.sh ./configs_demo/deraning.json
+sh test.sh ./configs_demo/deraining.json
 
 # test the image deblurring model
 sh test.sh ./configs_demo/deblurring.json
