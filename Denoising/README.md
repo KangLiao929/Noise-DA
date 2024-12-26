@@ -56,7 +56,7 @@ sh train.sh Denoising/configs/options_train.json
 sh train.sh Denoising/configs/options_train.json
 ```
 
-## :framed_picture Evaluation
+## :framed_picture: Evaluation
 
 - Download the pre-trained [models](https://drive.google.com/file/d/1ZJ7LXCfQptjqCn5PYWzZTsRZJW501CjC/view?usp=sharing) and place them in `Noise-DA/checkpoints/` (Ignored if <a href="../README.md## 🏂 Demo & Quick Inference">Demo & Quick Inference</a> has been tried).
 

@@ -49,7 +49,7 @@ sh train.sh Deblurring/configs/options_train.json
 sh train.sh Deblurring/configs/options_train.json
 ```
 
-## :framed_picture Evaluation
+## :framed_picture: Evaluation
 
 - Download the pre-trained [models](https://drive.google.com/file/d/1CI1v5M3zLFJ8d_SzgYXlk7Wqa2WMuCF6/view?usp=sharing) and place them in `Noise-DA/checkpoints/` (Ignored if <a href="../README.md## 🏂 Demo & Quick Inference">Demo & Quick Inference</a> has been tried).
 
