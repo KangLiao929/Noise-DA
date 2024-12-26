@@ -1,0 +1,141 @@
+{
+    "name": "deblur",
+    "gpu_ids": [0], 
+    "seed" : -1,
+    "finetune_norm": false,
+    "diff_flag": 1, // flag for using diffusion loss during training
+    "ctrl_epoch": 300,
+    "diff_weight": 0.2,
+
+    "path": {
+        "base_dir": "experiments",
+        "tb_logger": "tb_logger",
+        //for training
+        "results": "./results/deblur/",
+        "checkpoint": "./checkpoint/deblur/",
+        //for resume training
+        //"resume_state": "./checkpoint/deblur/5",
+        "now_model": "1"
+    },
+
+    "datasets": {
+        "train": {
+            "which_dataset": {
+                "name": ["data.dataset", "DatasetTrain"],
+                "args":{
+                    "data_root": "flist_name/deblur/gopro_train_patch_input.flist",
+                    "gt_root": "flist_name/deblur/gopro_train_patch_gt.flist",
+                    "real_root": "flist_name/deblur/RealBlur_J_train_input.flist",
+                    "ref_root": "flist_name/deblur/gopro_train_patch_gt.flist", // path of the unpaired clean dataset for the extension application, could be "flist_name/coco.flist"
+                    "data_len": -1,
+                    "patch_size": 128,
+                    "denoise": false,
+                    "norm": "norm1" // norm0 for [0, 1] data normlization, norm1 for [-1, 1] data normlization
+                } 
+            },
+            "which_dataset_val": {
+                "name": ["data.dataset", "DatasetTest"],
+                "args":{
+                    "data_root": "flist_name/deblur/RealBlur_J_test_input.flist",
+                    "gt_root":  "flist_name/deblur/RealBlur_J_test_gt.flist",
+                    "flag_label": true,
+                    "norm": "norm1"
+                } 
+            },
+            "dataloader":{
+                "validation_split": 0,
+                "args":{ 
+                    "batch_size": 3,
+                    "num_workers": 4,
+                    "shuffle": true,
+                    "pin_memory": true,
+                    "drop_last": true
+                },
+                "val_args":{ 
+                    "batch_size": 1,
+                    "num_workers": 4,
+                    "shuffle": true,
+                    "pin_memory": true,
+                    "drop_last": false
+                }
+            }
+        }
+    },
+
+    "model": {
+        "which_model": {
+            "name": ["models.model", "NoiseDA"],
+            "args": {
+                "sample_num": 8,
+                "task": "deblur",
+                "ema_scheduler": {
+                    "ema_start": 1,
+                    "ema_iter": 1,
+                    "ema_decay": 0.9999
+                },
+                "optimizers": [
+                    { "lr": 5e-5, "weight_decay": 0}
+                ]
+            }
+        }, 
+        "which_networks": [
+            {
+                "name": ["models.network", "Network"],
+                "args": {
+                    "init_type": "kaiming",
+                    "module_name": "guided_diffusion",
+                    "unet": {
+                        "in_channel": 9,
+                        "out_channel": 3,
+                        "inner_channel": 64,
+                        "channel_mults": [
+                            1,
+                            2,
+                            4,
+                            8
+                        ],
+                        "attn_res": [
+                            // 32,
+                            16
+                            // 8
+                        ],
+                        "num_head_channels": 32,
+                        "res_blocks": 2,
+                        "dropout": 0.2,
+                        "image_size": 128
+                    },
+                    "beta_schedule": {
+                        "train": {
+                            "schedule": "linear",
+                            "n_timestep": 1000,
+                            "linear_start": 1e-6,
+                            "linear_end": 0.01
+                        }
+                    }
+                }
+            }
+        ],
+        "which_losses": [
+            "mse_loss", "charbonnier_loss", "mse_loss_alpha", "final_loss", "cal_triplet_margin_loss"
+        ],
+        "which_metrics": [
+            "psnr", "ssim"
+        ]
+    },
+
+    "train": {
+        "n_epoch": 1e8,
+        "n_iter": 1e8,
+        "val_epoch": 10,
+        "save_checkpoint_epoch": 10,
+        "log_iter": 1e4,
+        "tensorboard" : true
+    },
+    
+    "debug": {
+        "val_epoch": 1,
+        "save_checkpoint_epoch": 1,
+        "log_iter": 10,
+        "debug_split": 50
+    }
+}

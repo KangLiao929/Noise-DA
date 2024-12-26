@@ -1,0 +1,107 @@
+{
+    "name": "derain",
+    "gpu_ids": [0], 
+    "seed" : -1,
+    "finetune_norm": false,
+    "diff_flag": 1, // flag for using diffusion loss during training
+    "ctrl_epoch": 300,
+    "diff_weight": 0.2,
+
+    "path": {
+        "base_dir": "results",
+        "tb_logger": "tb_logger",
+        "results": "./images/",
+        "checkpoint": "./checkpoints/derain.pth",
+        "now_model": "1"
+    },
+
+    "datasets": {
+        "test": { 
+            "which_dataset": {
+                "name": "DatasetTest",
+                "args":{
+                    "data_root": "./inputs/deraining/",
+                    "gt_root":  "",
+                    "norm": "norm1"
+                }
+            },
+            "dataloader":{
+                "args":{
+                    "batch_size": 8,
+                    "num_workers": 4,
+                    "pin_memory": true
+                }
+            }
+        }
+    },
+
+    "model": {
+        "which_model": {
+            "name": ["models.model", "NoiseDA"],
+            "args": {
+                "sample_num": 8,
+                "task": "derain",
+                "ema_scheduler": {
+                    "ema_start": 1,
+                    "ema_iter": 1,
+                    "ema_decay": 0.9999
+                },
+                "optimizers": [
+                    { "lr": 5e-5, "weight_decay": 0}
+                ]
+            }
+        }, 
+        "which_networks": [
+            {
+                "name": ["models.network", "Network"],
+                "args": {
+                    "init_type": "kaiming",
+                    "module_name": "guided_diffusion",
+                    "unet": {
+                        "in_channel": 9,
+                        "out_channel": 3,
+                        "inner_channel": 64,
+                        "channel_mults": [
+                            1,
+                            2,
+                            4,
+                            8
+                        ],
+                        "attn_res": [
+                            // 32,
+                            16
+                            // 8
+                        ],
+                        "num_head_channels": 32,
+                        "res_blocks": 2,
+                        "dropout": 0.2,
+                        "image_size": 128
+                    },
+                    "beta_schedule": {
+                        "test": {
+                            "schedule": "linear",
+                            "n_timestep": 1000,
+                            "linear_start": 1e-6,
+                            "linear_end": 0.01
+                        }
+                    }
+                }
+            }
+        ],
+        "which_losses": [
+            "mse_loss", "charbonnier_loss", "mse_loss_alpha", "final_loss", "cal_triplet_margin_loss"
+        ],
+        "which_metrics": [
+            "psnr_y", "ssim_y"
+        ]
+    },
+
+    "train": {
+        "n_epoch": 1e8,
+        "n_iter": 1e8,
+        "val_epoch": 10,
+        "save_checkpoint_epoch": 10,
+        "log_iter": 1e4,
+        "tensorboard" : false
+    }
+}

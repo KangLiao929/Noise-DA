@@ -3,7 +3,7 @@
 ## Introduction
 This is the official implementation for [Denoising as Adaptation: Noise-Space Domain Adaptation for Image Restoration](https://arxiv.org/abs/2406.18516) (arXiv 2024).
 
-[Kang Liao](https://kangliao929.github.io/), [Zongsheng Yue](https://zsyoaoa.github.io/), [Zhouxia Wang](https://scholar.google.com.hk/citations?user=JWds_bQAAAAJ&hl=zh-CN), [Chen Change Loy](https://www.mmlab-ntu.com/person/ccloy/index.html)
+[Kang Liao](https://kangliao929.github.io/), [Zongsheng Yue](https://zsyoaoa.github.io/), [Zhouxia Wang](https://wzhouxiff.github.io/), [Chen Change Loy](https://www.mmlab-ntu.com/person/ccloy/index.html)
 
 S-Lab, Nanyang Technological University
 
@@ -19,12 +19,89 @@ S-Lab, Nanyang Technological University
 >  * To eliminate the shortcut learning in joint training, we design strategies to fool the diffusion model, making it difficult to distinguish between synthetic and real conditions, thereby encouraging both to align consistently with the target clean distribution.
 >  * Our method offers a general and flexible adaptation strategy applicable beyond specific restoration tasks. It requires no prior knowledge of noise distribution or degradation models and is compatible with various restoration networks. The diffusion model is discarded after training, incurring no extra computational cost during restoration inference.
 
-Check out more visual results and interactions [here](https://kangliao929.github.io/projects/noise-da/).
+## 📝 Changelog
 
-## Code
-Will be released soon.
+- [x] 2024.10.08: The project page of Noise-DA is online.
+- [x] 2024.12.26: Release the code and pre-trained models.
+- [ ] Release more pre-trained restoration models such as DnCNN, Uformer, SwinIR, Restormer, etc.
+- [ ] Release Gradio Demo.
 
-## Citation
+## :desktop_computer: Requirements and Installation
+The code has been implemented with PyTorch 2.1.2 and CUDA 12.1.
+
+An example of installation commands is provided as follows:
+
+```
+# git clone this repository
+git clone https://github.com/KangLiao929/Noise-DA
+cd Noise-DA
+
+# create new anaconda env
+conda create -n NoiseDA python=3.9
+conda activate NoiseDA
+
+# install python dependencies
+pip install torch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 --index-url https://download.pytorch.org/whl/cu121
+pip install -r requirements.txt
+```
+
+## 🏂 Demo & Quick Inference
+- Download the [pretrained models](https://drive.google.com/drive/folders/1H-cdUzW7nkw3MBNi9iliXKjwj_xjpjcZ?usp=sharing) of each image restoration task (*e.g.*, denoising, deraining, and deblurring) to the ```checkpoints``` folder.
+
+- Customize the paths of the pretrained models ```"checkpoint"``` and degraded images ```"data_root"``` in ```.json``` of the [`configs_demo`](./configs_demo) folder. We also provide some examples of degraded images in the [`inputs`](./inputs) folder. Run the following scripts for different restoration tasks.
+
+```
+# test the image denoising model
+sh test.sh ./configs_demo/denoising.json
+
+# test the image deraining model
+sh test.sh ./configs_demo/deraning.json
+
+# test the image deblurring model
+sh test.sh ./configs_demo/deblurring.json
+```
+The restored results can be found in the [`results`](./results) folder. Note that the above restoration networks are built based on the classical and handy U-Net architecture. Better restoration performance can be achieved using more powerful archiectures such as SwinIR and Restormer, and we will release their pretrained models soon.
+
+🌈 Check out more visual results and restoration interactions [here](https://kangliao929.github.io/projects/noise-da/).
+
+## :airplane: Training and Evaluation
+The instructions of the dataset preparation, training, and evaluation (reproduce our quantitative metrics) for each image restoration task, are provided in their respective directories. Here is a summary table containing hyperlinks for easy navigation:
+
+<table>
+  <tr>
+    <th align="left">Task</th>
+    <th align="center">Dataset Instructions</th>
+    <th align="center">Training Instructions</th>
+    <th align="center">Evaluation Instructions</th>
+  </tr>
+  <tr>
+    <td align="left">Image Denoising</td>
+    <td align="center"><a href="Denoising/README.md## :circus_tent: Dataset Preparation">Link</a></td>
+    <td align="center"><a href="Denoising/README.md## :dolphin: Training">Link</a></td>
+    <td align="center"><a href="Denoising/README.md## :framed_picture Evaluation">Link</a></td>
+  </tr>
+  <tr>
+    <td>Image Deraining</td>
+    <td align="center"><a href="Deraining/README.md## :circus_tent: Dataset Preparation">Link</a></td>
+    <td align="center"><a href="Deraining/README.md## :dolphin: Training">Link</a></td>
+    <td align="center"><a href="Deraining/README.md## :framed_picture Evaluation">Link</a></td>
+  </tr>
+  <tr>
+    <td>Image Deblurring</td>
+    <td align="center"><a href="Deblurring/README.md## :circus_tent: Dataset Preparation">Link</a></td>
+    <td align="center"><a href="Deblurring/README.md## :dolphin: Training">Link</a></td>
+    <td align="center"><a href="Deblurring/README.md## :framed_picture Evaluation">Link</a></td>
+  </tr>
+</table>
+
+## :newspaper_roll: License
+This project is licensed under [NTU S-Lab License 1.0](LICENSE). Redistribution and use should follow this license.
+
+## :clap: Acknowledgement
+This project is based on [Palette](https://github.com/Janspiry/Palette-Image-to-Image-Diffusion-Models), [openai/guided-diffusion](https://github.com/openai/guided-diffusion), and [Restormer](https://github.com/swz30/Restormer). Thanks for their awesome works.
+
+## :thumbsup: Citation
+If you find our work useful for your research, please consider citing the paper:
 ```bibtex
 @article{liao2024denoising,
       title={Denoising as Adaptation: Noise-Space Domain Adaptation for Image Restoration},
@@ -34,8 +111,5 @@ Will be released soon.
     }
 ```
 
-## Contact
+## :phone: Contact
 For any questions, feel free to email `kang.liao@ntu.edu.sg`.
-
-## License
-This project is licensed under [NTU S-Lab License 1.0](LICENSE).
