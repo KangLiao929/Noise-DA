@@ -1,7 +1,7 @@
-# Denoising as Adaptation: Noise-Space Domain Adaptation for Image Restoration
+# Denoising as Adaptation: Noise-Space Domain Adaptation for Image Restoration (ICLR 2025)
 
 ## Introduction
-This is the official implementation for [Denoising as Adaptation: Noise-Space Domain Adaptation for Image Restoration](https://arxiv.org/abs/2406.18516) (arXiv 2024).
+This is the official implementation for [Denoising as Adaptation: Noise-Space Domain Adaptation for Image Restoration](https://arxiv.org/abs/2406.18516) (arXiv version).
 
 [Kang Liao](https://kangliao929.github.io/), [Zongsheng Yue](https://zsyoaoa.github.io/), [Zhouxia Wang](https://wzhouxiff.github.io/), [Chen Change Loy](https://www.mmlab-ntu.com/person/ccloy/index.html)
 
@@ -19,11 +19,12 @@ S-Lab, Nanyang Technological University
 >  * To eliminate the shortcut learning in joint training, we design strategies to fool the diffusion model, making it difficult to distinguish between synthetic and real conditions, thereby encouraging both to align consistently with the target clean distribution.
 >  * Our method offers a general and flexible adaptation strategy applicable beyond specific restoration tasks. It requires no prior knowledge of noise distribution or degradation models and is compatible with various restoration networks. The diffusion model is discarded after training, incurring no extra computational cost during restoration inference.
 
-## 📝 Changelog
+## 📝 Changelog & News
 
 - [x] 2024.10.08: The project page of Noise-DA is online.
-- [x] 2024.12.26: Release the code and pre-trained models.
-- [ ] Release more pre-trained restoration models such as DnCNN, Uformer, SwinIR, Restormer, etc.
+- [x] 2024.12.26: Release the code (both training and inference) and pre-trained models.
+- [x] 2025.01.23: This paper has been accepted to ICLR 2025.
+- [ ] Release more pre-trained restoration models of our extended experiments, such as DnCNN, Uformer, SwinIR, Restormer, etc.
 - [ ] Release Gradio Demo.
 
 ## :desktop_computer: Requirements and Installation
